@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/Jragonmiris/go-al/al"
 	"os"
+	"unsafe"
 )
 
 type WavHeader struct {
@@ -17,7 +18,7 @@ type WavHeader struct {
 	ByteRate      int32
 	BlockAlign    int16
 	BitsPerSample int16
-	_, _          [4]byte // 46 bytes
+	_, _          [4]byte // 44 bytes
 }
 
 type WavData struct {
@@ -26,6 +27,7 @@ type WavData struct {
 }
 
 func LoadWavFile(filename string) (*WavData, error) {
+	fmt.Println(unsafe.Sizeof(WavHeader{}))
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
@@ -33,7 +35,7 @@ func LoadWavFile(filename string) (*WavData, error) {
 	defer file.Close()
 
 	info, _ := os.Stat(filename) // No need to check error, we already know the path is valid
-	size := info.Size() - 46
+	size := info.Size() - 44
 
 	header := &WavHeader{}
 	err = binary.Read(file, binary.LittleEndian, header)
