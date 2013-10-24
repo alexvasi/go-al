@@ -34,7 +34,10 @@ func LoadWavFile(filename string) (*WavData, error) {
 	}
 	defer file.Close()
 
-	info, _ := os.Stat(filename) // No need to check error, we already know the path is valid
+	info, err := os.Stat(filename) // No need to check error, we already know the path is valid
+	if err != nil {
+		return nil, err
+	}
 	size := info.Size() - 44
 
 	header := &WavHeader{}
