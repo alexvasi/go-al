@@ -46,6 +46,7 @@ func main() {
 	}
 
 	buf, _ := al.GenBuffer()
+	//dat2 := al.Data{Frequency: dat.Frequency, Format: dat.Format, Data: dat.Data[0:2048]}
 	err = buf.BufferData(dat)
 	if err != nil {
 		panic(err)
