@@ -8,9 +8,9 @@ import ()
 type DistanceModel C.ALenum
 
 const (
-	NoDistanceModel         DistanceModel = C.AL_NONE
-	InverseDistance                       = C.AL_INVERSE_DISTANCE
-	InverseDistanceClampled               = C.AL_INVERSE_DISTANCE_CLAMPED
+	NoDistanceModel        DistanceModel = C.AL_NONE
+	InverseDistance                      = C.AL_INVERSE_DISTANCE
+	InverseDistanceClamped               = C.AL_INVERSE_DISTANCE_CLAMPED
 )
 
 func GetDopplerFactor() (float32, error) {
