@@ -3,6 +3,7 @@ package al
 // #include "goal.h"
 import "C"
 import (
+	"sort"
 	"unsafe"
 )
 
@@ -46,6 +47,25 @@ func DeleteSources(toDelete ...Source) error {
 
 	C.alDeleteSources(C.ALsizei(C.int(len(toDelete))), (*C.ALuint)(unsafe.Pointer(&toDelete[0])))
 	return GetError()
+}
+
+type sourceSorter []Source
+
+func (ss sourceSorter) Len() int {
+	return len(ss)
+}
+
+func (ss sourceSorter) Less(i, j int) bool {
+	return -ss[i].source < -ss[j].source
+}
+
+func (ss sourceSorter) Swap(i, j int) {
+	ss[i], ss[j] = ss[j], ss[i]
+}
+
+func SafelyDeleteSources(toDelete ...Source) error {
+	sort.Sort(sourceSorter(toDelete))
+	return DeleteSources(toDelete...)
 }
 
 func PlaySources(sources ...Source) error {

@@ -3,6 +3,7 @@ package al
 // #include "goal.h"
 import "C"
 import (
+	"sort"
 	"unsafe"
 )
 
@@ -28,6 +29,25 @@ func GenBuffer() (buf Buffer, err error) {
 	C.alGenBuffers(C.ALsizei(C.int(1)), &buf.buffer)
 	err = GetError()
 	return
+}
+
+type bufSorter []Buffer
+
+func (bs bufSorter) Len() int {
+	return len(bs)
+}
+
+func (bs bufSorter) Less(i, j int) bool {
+	return -bs[i].buffer < -bs[j].buffer
+}
+
+func (bs bufSorter) Swap(i, j int) {
+	bs[i], bs[j] = bs[j], bs[i]
+}
+
+func SafelyDeleteBuffers(toDelete ...Buffer) error {
+	sort.Sort(bufSorter(toDelete))
+	return DeleteBuffers(toDelete...)
 }
 
 func DeleteBuffers(toDelete ...Buffer) error {
