@@ -2,6 +2,7 @@ package alc
 
 // #include "goal.h"
 // #cgo windows LDFLAGS: -lOpenAL32
+// #cgo linux LDFLAGS: -lopenal
 import "C"
 import ()
 
