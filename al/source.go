@@ -364,6 +364,12 @@ func (source Source) GetBuffer() (Buffer, error) {
 	return buf, GetError()
 }
 
+func (source Source) GetState() (SourceState, error) {
+	var val C.ALint
+	C.alGetSourcei(source.source, C.AL_SOURCE_STATE, &val)
+	return SourceState(val), GetError()
+}
+
 func (source Source) GetSourceState() (SourceState, error) {
 	var val C.ALint
 	C.alGetSourcei(source.source, C.AL_BUFFER, &val)
